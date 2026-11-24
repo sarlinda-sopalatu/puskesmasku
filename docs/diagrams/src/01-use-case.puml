@@ -1,0 +1,151 @@
+@startuml PuskesmasKu-UseCase
+' ============================================================
+' USE CASE DIAGRAM - PuskesmasKu
+' Render: Kroki / PlantUML
+' ============================================================
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.1
+skinparam ActorBorderColor #0F766E
+skinparam ActorBackgroundColor #E6F5F1
+skinparam ActorFontStyle bold
+skinparam UsecaseBackgroundColor #F0FDFA
+skinparam UsecaseBorderColor #0F766E
+skinparam UsecaseFontColor #0B3B36
+skinparam UsecaseFontSize 11
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam rectangleBorderColor #94A3B8
+skinparam rectangleBorderThickness 1.5
+skinparam nodesep 18
+skinparam ranksep 34
+
+actor "Administrator" as ADMIN
+actor "Petugas\nPendaftaran" as REG
+actor "Dokter" as DOC
+actor "Perawat" as NURSE
+actor "Petugas\nFarmasi" as PHARM
+actor "Petugas\nKasir" as CASH
+actor "Pengunjung\n(Display)" as PUBLIC
+
+rectangle "SISTEM INFORMASI PuskesmasKu" {
+
+  package "A. Autentikasi & Pengguna" {
+    usecase "UC-01\nLogin / Logout" as UC01
+    usecase "UC-02\nKelola Pengguna" as UC02
+    usecase "UC-03\nKelola Hak Akses" as UC03
+    usecase "UC-04\nPengaturan Klinik" as UC04
+    usecase "UC-68\nProfil & Ganti Password" as UC68
+  }
+
+  package "B. Pendaftaran Pasien" {
+    usecase "UC-14\nDaftar Pasien Baru" as UC14
+    usecase "UC-15\nCari & Edit Pasien" as UC15
+    usecase "UC-17\nDetail & Riwayat Pasien" as UC17
+    usecase "UC-21\nCetak Kartu Pasien" as UC21
+  }
+
+  package "C. Antrean" {
+    usecase "UC-18\nDaftar Antrean" as UC18
+    usecase "UC-19\nPanggil / Batalkan" as UC19
+    usecase "UC-22\nCetak Tiket Antrean" as UC22
+    usecase "UC-40\nPanggil Antrean" as UC40
+  }
+
+  package "D. Rekam Medis Elektronik" {
+    usecase "UC-41\nCatat Tanda Vital" as UC41
+    usecase "UC-26\nMulai Pemeriksaan" as UC26
+    usecase "UC-28\nDiagnosis & Tindakan" as UC28
+    usecase "UC-30\nSusun Resep" as UC30
+    usecase "UC-31\nKontrol & Rujukan" as UC31
+    usecase "UC-33\nSelesaikan Pemeriksaan" as UC33
+    usecase "UC-34\nCetak Rekam Medis" as UC34
+  }
+
+  package "E. Farmasi" {
+    usecase "UC-46\nKelola Master Obat" as UC46
+    usecase "UC-47\nTerima Stok Obat" as UC47
+    usecase "UC-50\nDispense Resep" as UC50
+    usecase "UC-52\nStok & Alert" as UC52
+    usecase "UC-53\nLaporan Farmasi" as UC53
+  }
+
+  package "F. Pembayaran" {
+    usecase "UC-57\nKelola Tarif" as UC57
+    usecase "UC-58\nVerifikasi BPJS" as UC58
+    usecase "UC-59\nPembayaran & Kuitansi" as UC59
+    usecase "UC-62\nRiwayat Transaksi" as UC62
+  }
+
+  package "G. Laporan & Analitik" {
+    usecase "UC-20\nDashboard" as UC20
+    usecase "UC-63\nLaporan 6 Tab" as UC63
+    usecase "UC-70\nExport & Cetak Laporan" as UC70
+  }
+
+  package "H. Display Publik" {
+    usecase "UC-64\nLihat Display Antrean" as UC64
+    usecase "UC-66\nPanggilan Suara" as UC66
+  }
+}
+
+' ---------- Relasi Aktor - Use Case ----------
+ADMIN --> UC01
+ADMIN --> UC02
+ADMIN --> UC03
+ADMIN --> UC04
+ADMIN --> UC68
+ADMIN --> UC20
+ADMIN --> UC63
+ADMIN --> UC70
+
+REG --> UC01
+REG --> UC14
+REG --> UC15
+REG --> UC21
+REG --> UC18
+REG --> UC19
+REG --> UC22
+
+DOC --> UC01
+DOC --> UC17
+DOC --> UC26
+DOC --> UC28
+DOC --> UC30
+DOC --> UC31
+DOC --> UC33
+DOC --> UC34
+DOC --> UC63
+
+NURSE --> UC01
+NURSE --> UC17
+NURSE --> UC40
+NURSE --> UC41
+
+PHARM --> UC01
+PHARM --> UC46
+PHARM --> UC47
+PHARM --> UC50
+PHARM --> UC52
+PHARM --> UC53
+
+CASH --> UC01
+CASH --> UC57
+CASH --> UC58
+CASH --> UC59
+CASH --> UC62
+
+PUBLIC --> UC64
+PUBLIC --> UC66
+
+' ---------- Relasi Include / Extend ----------
+UC30 ..> UC50 : <<include>>
+UC59 ..> UC58 : <<extend>>
+UC33 ..> UC59 : <<include>>
+UC18 ..> UC14 : <<extend>>
+UC50 ..> UC52 : <<include>>
+
+@enduml

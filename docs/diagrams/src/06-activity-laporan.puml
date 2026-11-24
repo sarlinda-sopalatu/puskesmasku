@@ -1,0 +1,42 @@
+@startuml PuskesmasKu-Activity-Laporan
+' ============================================================
+' ACTIVITY DIAGRAM - LAPORAN & ANALITIK
+' ============================================================
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam ActivityBackgroundColor #F0FDFA
+skinparam ActivityBorderColor #0F766E
+skinparam ActivityFontColor #0B3B36
+skinparam ActivityDiamondBackgroundColor #FEF3C7
+skinparam ActivityDiamondBorderColor #B45309
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.2
+skinparam SwimlaneBorderColor #94A3B8
+skinparam SwimlaneTitleBackgroundColor #E6F5F1
+skinparam SwimlaneTitleFontStyle bold
+skinparam SwimlaneTitleFontColor #0B3B36
+
+|Pengguna|
+start
+:Buka menu Laporan;
+:Pilih tab laporan\n(Ringkasan / Kunjungan / Poli /\nPenyakit / Obat / Petugas);
+:Atur filter tanggal & poli;
+
+|Sistem|
+:Muat data dari localStorage;
+:Aggregasi KPI, tabel & grafik;
+:Rendering tab laporan;
+
+|Pengguna|
+if (Export CSV?) then (Ya)
+  :Unduh file CSV;
+endif
+if (Cetak?) then (Ya)
+  :Render dokumen cetak;
+  :Buka dialog print;
+endif
+stop
+
+@enduml

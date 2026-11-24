@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /profiles/{uid} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasAll(['name','username','email','phone','requestedRole','role','status'])
+        && request.resource.data.keys().hasOnly(['name','username','email','phone','requestedRole','role','status'])
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100
+        && request.resource.data.username is string && request.resource.data.username.matches('^[a-z0-9._-]{3,30}$')
+        && request.resource.data.phone is string && request.resource.data.phone.size() <= 25
+        && request.resource.data.requestedRole in ['admin','pendaftaran','dokter','perawat','farmasi','kasir','pengunjung']
+        && request.resource.data.role == 'pengunjung' && request.resource.data.status == 'pending';
+      // Persetujuan dilakukan pengelola melalui Firebase Console (IAM), bukan dari browser.
+      allow list, update, delete: if false;
+    }
+  }
+}

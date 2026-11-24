@@ -1,0 +1,69 @@
+@startuml PuskesmasKu-UseCase-FrontOffice
+' ============================================================
+' USE CASE DIAGRAM - FRONT OFFICE & ANTREAN
+' Aktor: Pendaftaran, Perawat, Pengunjung
+' ============================================================
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.2
+skinparam ActorBorderColor #0F766E
+skinparam ActorBackgroundColor #E6F5F1
+skinparam ActorFontStyle bold
+skinparam UsecaseBackgroundColor #F0FDFA
+skinparam UsecaseBorderColor #0F766E
+skinparam UsecaseFontColor #0B3B36
+skinparam UsecaseFontSize 12
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam rectangleBorderColor #94A3B8
+skinparam rectangleBorderThickness 1.4
+skinparam nodesep 22
+skinparam ranksep 32
+
+actor "Petugas\nPendaftaran" as REG
+actor "Perawat" as NURSE
+actor "Pengunjung" as PUBLIC
+
+rectangle "SISTEM INFORMASI PuskesmasKu" {
+
+  package "B. Pendaftaran Pasien" {
+    usecase "UC-14 Daftar Pasien Baru" as UC14
+    usecase "UC-15 Cari & Edit Pasien" as UC15
+    usecase "UC-17 Detail & Riwayat" as UC17
+    usecase "UC-21 Cetak Kartu Pasien" as UC21
+  }
+
+  package "C. Antrean" {
+    usecase "UC-18 Daftar Antrean" as UC18
+    usecase "UC-19 Panggil / Batalkan" as UC19
+    usecase "UC-22 Cetak Tiket Antrean" as UC22
+    usecase "UC-40 Panggil Antrean" as UC40
+  }
+
+  package "H. Display Publik" {
+    usecase "UC-64 Lihat Display Antrean" as UC64
+    usecase "UC-66 Panggilan Suara" as UC66
+  }
+}
+
+REG --> UC14
+REG --> UC15
+REG --> UC17
+REG --> UC21
+REG --> UC18
+REG --> UC19
+REG --> UC22
+
+NURSE --> UC40
+NURSE --> UC17
+
+PUBLIC --> UC64
+PUBLIC --> UC66
+
+UC18 ..> UC14 : <<extend>>
+
+@enduml

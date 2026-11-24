@@ -1,0 +1,81 @@
+@startuml PuskesmasKu-Activity-Pelayanan
+' ============================================================
+' ACTIVITY DIAGRAM - ALUR PELAYANAN PASIEN END-TO-END
+' ============================================================
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam ActivityBackgroundColor #F0FDFA
+skinparam ActivityBorderColor #0F766E
+skinparam ActivityFontColor #0B3B36
+skinparam ActivityDiamondBackgroundColor #FEF3C7
+skinparam ActivityDiamondBorderColor #B45309
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.1
+skinparam SwimlaneBorderColor #94A3B8
+skinparam SwimlaneTitleBackgroundColor #E6F5F1
+skinparam SwimlaneTitleFontStyle bold
+skinparam SwimlaneTitleFontColor #0B3B36
+
+|Petugas Pendaftaran|
+start
+:Login ke sistem;
+:Pilih menu Pendaftaran;
+if (Pasien sudah terdaftar?) then (Ya)
+  :Cari pasien berdasarkan\nNo. RM / NIK / nama;
+  :Pilih data pasien;
+else (Tidak)
+  :Isi formulir pasien baru;
+  :Validasi NIK 16 digit\ndan No. BPJS 13 digit;
+  :Simpan data pasien;
+endif
+:Pilih poli & jenis kunjungan;
+if (Termasuk prioritas?) then (Ya)
+  :Tandai prioritas\n(lansia / ibu hamil / balita / darurat);
+endif
+:Simpan antrean;
+: Cetak tiket antrean;
+
+|Perawat|
+:Panggil antrean berikutnya;
+:Catat tanda vital\n(TD, nadi, suhu, RR, BB, TB, SpO2);
+:Catat keluhan awal;
+
+|Dokter|
+:Mulai pemeriksaan;
+:Anamnesis & pemeriksaan fisik;
+:Tentukan diagnosis ICD-10;
+:Catat tindakan medis;
+if (Perlu rujukan?) then (Ya)
+  :Buat surat rujukan;
+else (Tidak)
+  :Tentukan jadwal kontrol ulang;
+endif
+:Susun resep elektronik;
+:Selesaikan pemeriksaan;
+
+|Petugas Farmasi|
+:Terima resep elektronik;
+if (Stok cukup & tidak kedaluwarsa?) then (Ya)
+  :Siapkan & serahkan obat;
+  :Kurangi stok + catat mutasi keluar;
+else (Tidak)
+  :Tampilkan notifikasi stok;
+  :Koordinasikan substitusi dengan dokter;
+endif
+
+|Petugas Kasir|
+:Terima tagihan otomatis;
+if (Penjamin BPJS?) then (Ya)
+  :Verifikasi No. BPJS & No. SEP;
+  :Status tagihan = ditanggung;
+else (Tidak)
+  :Pilih metode pembayaran;
+  :Terima pembayaran & hitung kembalian;
+  :Status tagihan = lunas;
+endif
+: Cetak kuitansi;
+stop
+
+@enduml

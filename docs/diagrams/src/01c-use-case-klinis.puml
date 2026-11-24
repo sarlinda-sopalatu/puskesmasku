@@ -1,0 +1,85 @@
+@startuml PuskesmasKu-UseCase-Klinis
+' ============================================================
+' USE CASE DIAGRAM - PELAYANAN KLINIS, FARMASI & KASIR
+' Aktor: Dokter, Perawat, Farmasi, Kasir
+' ============================================================
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.1
+skinparam ActorBorderColor #0F766E
+skinparam ActorBackgroundColor #E6F5F1
+skinparam ActorFontStyle bold
+skinparam UsecaseBackgroundColor #F0FDFA
+skinparam UsecaseBorderColor #0F766E
+skinparam UsecaseFontColor #0B3B36
+skinparam UsecaseFontSize 11
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam rectangleBorderColor #94A3B8
+skinparam rectangleBorderThickness 1.4
+skinparam nodesep 16
+skinparam ranksep 28
+
+actor "Dokter" as DOC
+actor "Perawat" as NURSE
+actor "Petugas\nFarmasi" as PHARM
+actor "Petugas\nKasir" as CASH
+
+rectangle "SISTEM INFORMASI PuskesmasKu" {
+
+  package "D. Rekam Medis Elektronik" {
+    usecase "UC-41 Catat Tanda Vital" as UC41
+    usecase "UC-26 Mulai Pemeriksaan" as UC26
+    usecase "UC-28 Diagnosis & Tindakan" as UC28
+    usecase "UC-30 Susun Resep" as UC30
+    usecase "UC-31 Kontrol & Rujukan" as UC31
+    usecase "UC-33 Selesaikan Pemeriksaan" as UC33
+    usecase "UC-34 Cetak Rekam Medis" as UC34
+  }
+
+  package "E. Farmasi" {
+    usecase "UC-46 Kelola Master Obat" as UC46
+    usecase "UC-47 Terima Stok Obat" as UC47
+    usecase "UC-50 Dispense Resep" as UC50
+    usecase "UC-52 Stok & Alert" as UC52
+    usecase "UC-53 Laporan Farmasi" as UC53
+  }
+
+  package "F. Pembayaran" {
+    usecase "UC-57 Kelola Tarif" as UC57
+    usecase "UC-58 Verifikasi BPJS" as UC58
+    usecase "UC-59 Pembayaran & Kuitansi" as UC59
+    usecase "UC-62 Riwayat Transaksi" as UC62
+  }
+}
+
+DOC --> UC26
+DOC --> UC28
+DOC --> UC30
+DOC --> UC31
+DOC --> UC33
+DOC --> UC34
+
+NURSE --> UC41
+
+PHARM --> UC46
+PHARM --> UC47
+PHARM --> UC50
+PHARM --> UC52
+PHARM --> UC53
+
+CASH --> UC57
+CASH --> UC58
+CASH --> UC59
+CASH --> UC62
+
+UC50 ..> UC30 : <<include>>
+UC50 ..> UC52 : <<include>>
+UC33 ..> UC59 : <<include>>
+UC58 ..> UC59 : <<extend>>
+
+@enduml

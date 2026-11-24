@@ -1,0 +1,235 @@
+@startuml PuskesmasKu-ERD
+' ============================================================
+' ERD - PuskesmasKu (Crow's Foot / IE Notation)
+' 12 entitas utama
+' ============================================================
+hide circle
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam ArrowColor #475569
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 60
+skinparam EntityBackgroundColor #FFFFFF
+skinparam EntityBorderColor #0F766E
+skinparam EntityBorderThickness 1.5
+skinparam EntityFontColor #0B3B36
+skinparam EntityFontStyle bold
+skinparam EntityFontSize 13
+
+entity "USER" as USER {
+  * id : VARCHAR(20) <<PK>>
+  --
+  username : VARCHAR(30) <<UQ>>
+  password : VARCHAR(255)
+  name : VARCHAR(100)
+  role : ENUM
+  poli_id : VARCHAR(10) <<FK>>
+  phone : VARCHAR(20)
+  active : BOOLEAN
+  last_login : DATETIME
+}
+
+entity "PATIENT" as PATIENT {
+  * id : VARCHAR(20) <<PK>>
+  --
+  no_rm : VARCHAR(20) <<UQ>>
+  nik : CHAR(16) <<UQ>>
+  nama : VARCHAR(100)
+  tempat_lahir : VARCHAR(50)
+  tanggal_lahir : DATE
+  jenis_kelamin : ENUM
+  alamat : TEXT
+  no_telepon : VARCHAR(20)
+  jenis_kepesertaan : ENUM
+  no_bpjs : CHAR(13)
+  kontak_keluarga : JSON
+  created_by : VARCHAR(20) <<FK>>
+  created_at : DATETIME
+}
+
+entity "POLI" as POLI {
+  * id : VARCHAR(10) <<PK>>
+  --
+  nama : VARCHAR(50)
+  singkat : VARCHAR(20)
+  kode : CHAR(2)
+  warna : CHAR(7)
+  ikon : VARCHAR(20)
+}
+
+entity "QUEUE" as QUEUE {
+  * id : VARCHAR(20) <<PK>>
+  --
+  nomor : INT
+  kode : VARCHAR(10)
+  tanggal : DATE
+  patient_id : VARCHAR(20) <<FK>>
+  poli_id : VARCHAR(10) <<FK>>
+  prioritas : BOOLEAN
+  alasan_prioritas : VARCHAR(50)
+  status : ENUM
+  created_by : VARCHAR(20) <<FK>>
+  called_at : DATETIME
+  started_at : DATETIME
+  finished_at : DATETIME
+  cancelled_at : DATETIME
+  alasan_batal : VARCHAR(100)
+}
+
+entity "EXAM" as EXAM {
+  * id : VARCHAR(20) <<PK>>
+  --
+  no_pemeriksaan : VARCHAR(24) <<UQ>>
+  queue_id : VARCHAR(20) <<FK>>
+  patient_id : VARCHAR(20) <<FK>>
+  dokter_id : VARCHAR(20) <<FK>>
+  poli_id : VARCHAR(10) <<FK>>
+  tanggal : DATE
+  status : ENUM
+  keluhan : TEXT
+  riwayat_alergi : TEXT
+  pemeriksaan_fisik : JSON
+  diagnosis : VARCHAR(200)
+  kode_icd10 : VARCHAR(10)
+  diagnosis_sekunder : VARCHAR(200)
+  tindakan : TEXT
+  catatan_dokter : TEXT
+  rujukan : JSON
+  kontrol_ulang : DATE
+  resep : JSON
+  resep_status : ENUM
+  dispensed_at : DATETIME
+  dispensed_by : VARCHAR(20) <<FK>>
+  created_by : VARCHAR(20) <<FK>>
+  created_at : DATETIME
+  completed_at : DATETIME
+}
+
+entity "MEDICINE" as MEDICINE {
+  * id : VARCHAR(20) <<PK>>
+  --
+  kode : VARCHAR(10) <<UQ>>
+  nama : VARCHAR(100)
+  kategori : VARCHAR(50)
+  satuan : VARCHAR(20)
+  stok : INT
+  stok_minimum : INT
+  harga : DECIMAL(12,2)
+  batch : VARCHAR(20)
+  kadaluarsa : DATE
+  lokasi : VARCHAR(20)
+  aktif : BOOLEAN
+}
+
+entity "MUTATION" as MUTATION {
+  * id : VARCHAR(20) <<PK>>
+  --
+  medicine_id : VARCHAR(20) <<FK>>
+  tipe : ENUM
+  jumlah : INT
+  stok_sebelum : INT
+  stok_sesudah : INT
+  catatan : TEXT
+  referensi : VARCHAR(50)
+  supplier : VARCHAR(100)
+  batch : VARCHAR(20)
+  kadaluarsa : DATE
+  user_id : VARCHAR(20) <<FK>>
+  created_at : DATETIME
+}
+
+entity "TARIFF" as TARIFF {
+  * id : VARCHAR(20) <<PK>>
+  --
+  kode : VARCHAR(10) <<UQ>>
+  nama : VARCHAR(100)
+  kategori : VARCHAR(50)
+  tarif : DECIMAL(12,2)
+  poli_id : VARCHAR(10) <<FK>>
+  aktif : BOOLEAN
+}
+
+entity "BILL" as BILL {
+  * id : VARCHAR(20) <<PK>>
+  --
+  no_bill : VARCHAR(24) <<UQ>>
+  patient_id : VARCHAR(20) <<FK>>
+  examination_id : VARCHAR(20) <<FK>>
+  poli_id : VARCHAR(10) <<FK>>
+  tanggal : DATE
+  items : JSON
+  subtotal : DECIMAL(12,2)
+  diskon : DECIMAL(12,2)
+  total : DECIMAL(12,2)
+  penjamin : ENUM
+  status : ENUM
+  metode : ENUM
+  jumlah_bayar : DECIMAL(12,2)
+  kembalian : DECIMAL(12,2)
+  paid_at : DATETIME
+  kasir_id : VARCHAR(20) <<FK>>
+  verification : JSON
+  created_by : VARCHAR(20) <<FK>>
+  created_at : DATETIME
+}
+
+entity "AUDIT" as AUDIT {
+  * id : VARCHAR(20) <<PK>>
+  --
+  action : VARCHAR(50)
+  module : VARCHAR(50)
+  description : TEXT
+  user_id : VARCHAR(20) <<FK>>
+  user_name : VARCHAR(100)
+  user_role : VARCHAR(20)
+  meta : JSON
+  created_at : DATETIME
+}
+
+entity "CLINIC" as CLINIC {
+  * id : VARCHAR(20) <<PK>>
+  --
+  nama : VARCHAR(100)
+  instansi : VARCHAR(100)
+  alamat : TEXT
+  telepon : VARCHAR(20)
+  whatsapp : VARCHAR(20)
+  email : VARCHAR(100)
+  jam_operasional : VARCHAR(50)
+  kepala : VARCHAR(100)
+  kode_faskes : VARCHAR(20)
+  motto : TEXT
+}
+
+entity "ROLE_ACCESS" as ROLE_ACCESS {
+  * role : VARCHAR(20) <<PK>>
+  --
+  pages : JSON
+  updated_at : DATETIME
+}
+
+' ---------- Relasi & Kardinalitas ----------
+USER ||--o{ PATIENT : "created_by"
+POLI ||--o{ USER : "poli_id"
+USER ||--o{ QUEUE : "created_by"
+PATIENT ||--o{ QUEUE : "patient_id"
+POLI ||--o{ QUEUE : "poli_id"
+QUEUE ||--o| EXAM : "queue_id"
+PATIENT ||--o{ EXAM : "patient_id"
+USER ||--o{ EXAM : "dokter_id"
+POLI ||--o{ EXAM : "poli_id"
+EXAM ||--o| BILL : "examination_id"
+PATIENT ||--o{ BILL : "patient_id"
+USER ||--o{ BILL : "kasir_id"
+MEDICINE ||--o{ MUTATION : "medicine_id"
+USER ||--o{ MUTATION : "user_id"
+USER ||--o{ AUDIT : "user_id"
+POLI ||--o{ TARIFF : "poli_id"
+MEDICINE }o--o{ BILL : "items (JSON)"
+TARIFF }o--o{ BILL : "items (JSON)"
+MEDICINE }o--o{ EXAM : "resep (JSON)"
+
+@enduml

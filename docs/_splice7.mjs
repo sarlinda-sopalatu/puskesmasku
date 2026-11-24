@@ -1,0 +1,11 @@
+﻿import fs from 'node:fs/promises';
+const DOC = 'docs/MAKALAH_PuskesmasKu.md';
+let doc = await fs.readFile(DOC, 'utf8');
+const s7 = (await fs.readFile('docs/_section7.md', 'utf8')).trimEnd();
+const before = doc.length;
+const re = /## 7\. PERENCANAAN SPRINT 1.4[\s\S]*?(?=## 8\. KESIMPULAN)/;
+if (!re.test(doc)) throw new Error('Bagian 7 tidak ditemukan');
+doc = doc.replace(re, () => s7 + '\n\n');
+if (!doc.includes('Gambar 7.1')) throw new Error('Gambar 7.1 gagal disisipkan');
+await fs.writeFile(DOC, doc, 'utf8');
+console.log(`Selesai. ${before} -> ${doc.length} karakter`);

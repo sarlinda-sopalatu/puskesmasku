@@ -1,0 +1,47 @@
+@startuml PuskesmasKu-Activity-Pembayaran
+' ============================================================
+' ACTIVITY DIAGRAM - PEMBAYARAN & VERIFIKASI BPJS
+' ============================================================
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam ActivityBackgroundColor #F0FDFA
+skinparam ActivityBorderColor #0F766E
+skinparam ActivityFontColor #0B3B36
+skinparam ActivityDiamondBackgroundColor #FEF3C7
+skinparam ActivityDiamondBorderColor #B45309
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.2
+skinparam SwimlaneBorderColor #94A3B8
+skinparam SwimlaneTitleBackgroundColor #E6F5F1
+skinparam SwimlaneTitleFontStyle bold
+skinparam SwimlaneTitleFontColor #0B3B36
+
+|Petugas Kasir|
+start
+:Buka menu Pembayaran;
+:Pilih tagihan pasien;
+if (Status tagihan?) then (Belum bayar)
+  if (Penjamin?) then (BPJS)
+    :Input No. BPJS & No. SEP;
+    :Verifikasi penjaminan;
+    :Status tagihan = ditanggung;
+  else (Umum)
+    :Pilih metode pembayaran;
+    if (Metode?) then (Tunai)
+      :Input nominal uang diterima;
+      :Hitung kembalian;
+    else (QRIS / Transfer / Debit)
+      :Konfirmasi transaksi;
+    endif
+    :Status tagihan = lunas;
+  endif
+  : Cetak kuitansi;
+else (Lunas / Ditanggung)
+  : Cetak ulang kuitansi;
+endif
+:Simpan riwayat transaksi;
+stop
+
+@enduml

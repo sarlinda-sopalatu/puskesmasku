@@ -1,0 +1,66 @@
+@startuml PuskesmasKu-UseCase-Admin
+' ============================================================
+' USE CASE DIAGRAM - ADMINISTRASI, PENGGUNA & LAPORAN
+' Aktor: Administrator, Dokter
+' ============================================================
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam packageStyle rectangle
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.2
+skinparam ActorBorderColor #0F766E
+skinparam ActorBackgroundColor #E6F5F1
+skinparam ActorFontStyle bold
+skinparam UsecaseBackgroundColor #F0FDFA
+skinparam UsecaseBorderColor #0F766E
+skinparam UsecaseFontColor #0B3B36
+skinparam UsecaseFontSize 12
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam rectangleBorderColor #94A3B8
+skinparam rectangleBorderThickness 1.4
+skinparam nodesep 24
+skinparam ranksep 36
+
+actor "Administrator" as ADMIN
+actor "Dokter" as DOC
+
+rectangle "SISTEM INFORMASI PuskesmasKu" {
+
+  package "A. Autentikasi & Pengguna" {
+    usecase "UC-01 Login / Logout" as UC01
+    usecase "UC-02 Kelola Pengguna" as UC02
+    usecase "UC-03 Kelola Hak Akses" as UC03
+    usecase "UC-04 Pengaturan Klinik" as UC04
+    usecase "UC-05 Reset Data Demo" as UC05
+    usecase "UC-06 Export / Backup JSON" as UC06
+    usecase "UC-68 Profil & Ganti Password" as UC68
+  }
+
+  package "G. Laporan & Analitik" {
+    usecase "UC-20 Dashboard" as UC20
+    usecase "UC-63 Laporan 6 Tab" as UC63
+    usecase "UC-70 Export & Cetak Laporan" as UC70
+  }
+}
+
+ADMIN --> UC01
+ADMIN --> UC02
+ADMIN --> UC03
+ADMIN --> UC04
+ADMIN --> UC05
+ADMIN --> UC06
+ADMIN --> UC68
+ADMIN --> UC20
+ADMIN --> UC63
+ADMIN --> UC70
+
+DOC --> UC20
+DOC --> UC63
+DOC --> UC70
+
+UC70 ..> UC63 : <<extend>>
+
+@enduml

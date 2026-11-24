@@ -1,0 +1,45 @@
+@startuml PuskesmasKu-Activity-Farmasi
+' ============================================================
+' ACTIVITY DIAGRAM - DISPENSING RESEP (FARMASI)
+' ============================================================
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam ActivityBackgroundColor #F0FDFA
+skinparam ActivityBorderColor #0F766E
+skinparam ActivityFontColor #0B3B36
+skinparam ActivityDiamondBackgroundColor #FEF3C7
+skinparam ActivityDiamondBorderColor #B45309
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.2
+skinparam SwimlaneBorderColor #94A3B8
+skinparam SwimlaneTitleBackgroundColor #E6F5F1
+skinparam SwimlaneTitleFontStyle bold
+skinparam SwimlaneTitleFontColor #0B3B36
+
+|Dokter|
+start
+:Susun resep elektronik\n(obat, jumlah, aturan pakai);
+:Simpan & kirim resep ke farmasi;
+
+|Petugas Farmasi|
+:Lihat daftar resep menunggu;
+:Pilih resep pasien;
+:Periksa stok, batch & tanggal kedaluwarsa;
+if (Semua item tersedia & valid?) then (Ya)
+  :Siapkan obat;
+  :Serahkan obat kepada pasien;
+  :Kurangi stok tiap item;
+  :Catat mutasi keluar;
+  :Update status resep = diserahkan;
+  :Catat petugas & waktu penyerahan;
+else (Tidak)
+  :Tampilkan alert stok / kedaluwarsa;
+  :Hubungi dokter untuk substitusi;
+  :Tunggu konfirmasi dokter;
+endif
+:Perbarui laporan penggunaan obat;
+stop
+
+@enduml

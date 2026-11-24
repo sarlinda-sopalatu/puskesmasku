@@ -1,0 +1,58 @@
+@startuml PuskesmasKu-UseCase-Overview
+' ============================================================
+' USE CASE DIAGRAM - OVERVIEW (Level Modul)
+' ============================================================
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 14
+skinparam packageStyle rectangle
+skinparam ArrowColor #0F766E
+skinparam ArrowThickness 1.3
+skinparam ActorBorderColor #0F766E
+skinparam ActorBackgroundColor #E6F5F1
+skinparam ActorFontStyle bold
+skinparam UsecaseBackgroundColor #F0FDFA
+skinparam UsecaseBorderColor #0F766E
+skinparam UsecaseFontColor #0B3B36
+skinparam UsecaseFontSize 13
+skinparam rectangleBackgroundColor #F8FAFC
+skinparam rectangleBorderColor #0F766E
+skinparam rectangleBorderThickness 2
+skinparam nodesep 26
+skinparam ranksep 40
+
+actor "Administrator" as ADMIN
+actor "Petugas\nPendaftaran" as REG
+actor "Dokter" as DOC
+actor "Perawat" as NURSE
+actor "Petugas\nFarmasi" as PHARM
+actor "Petugas\nKasir" as CASH
+actor "Pengunjung" as PUBLIC
+
+rectangle "SISTEM INFORMASI PuskesmasKu" {
+
+  usecase "Mengelola Autentikasi\n& Pengguna" as M1
+  usecase "Mengelola Pendaftaran\nPasien" as M2
+  usecase "Mengelola Antrean\nLayanan" as M3
+  usecase "Mengelola Rekam Medis\nElektronik (EMR)" as M4
+  usecase "Mengelola Farmasi\n& Stok Obat" as M5
+  usecase "Mengelola Pembayaran\n& Tarif" as M6
+  usecase "Menyusun Laporan\n& Analitik" as M7
+  usecase "Menampilkan Display\nAntrean Publik" as M8
+}
+
+ADMIN --> M1
+ADMIN --> M7
+REG --> M2
+REG --> M3
+DOC --> M4
+DOC --> M7
+NURSE --> M3
+NURSE --> M4
+PHARM --> M5
+CASH --> M6
+PUBLIC --> M8
+
+@enduml

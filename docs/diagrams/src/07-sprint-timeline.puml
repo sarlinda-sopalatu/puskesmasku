@@ -1,0 +1,36 @@
+@startgantt PuskesmasKu-SprintTimeline
+' ============================================================
+' SPRINT TIMELINE - 4 SPRINT x 2 MINGGU
+' ============================================================
+Project starts 2026-09-07
+saturday are closed
+sunday are closed
+hide footbox
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam GanttTaskBackgroundColor #0F766E
+skinparam GanttTaskBorderColor #0B3B36
+skinparam GanttTaskFontColor #FFFFFF
+skinparam GanttArrowColor #475569
+skinparam GanttTodayColor #B4537A
+skinparam GanttCalendarBackgroundColor #F8FAFC
+
+[Sprint 1 - Foundation & Autentikasi] lasts 10 days
+[Sprint 1 - Foundation & Autentikasi] is colored in #0F766E/#FFFFFF
+[Sprint 2 - Pasien, Antrean & Display] starts at [Sprint 1 - Foundation & Autentikasi]'s end
+[Sprint 2 - Pasien, Antrean & Display] lasts 10 days
+[Sprint 2 - Pasien, Antrean & Display] is colored in #246B97/#FFFFFF
+[Sprint 3 - EMR & Farmasi] starts at [Sprint 2 - Pasien, Antrean & Display]'s end
+[Sprint 3 - EMR & Farmasi] lasts 10 days
+[Sprint 3 - EMR & Farmasi] is colored in #6D5AA8/#FFFFFF
+[Sprint 4 - Pembayaran & Laporan] starts at [Sprint 3 - EMR & Farmasi]'s end
+[Sprint 4 - Pembayaran & Laporan] lasts 10 days
+[Sprint 4 - Pembayaran & Laporan] is colored in #B4537A/#FFFFFF
+
+[Sprint 1 Review] happens at [Sprint 1 - Foundation & Autentikasi]'s end
+[Sprint 2 Review] happens at [Sprint 2 - Pasien, Antrean & Display]'s end
+[Sprint 3 Review] happens at [Sprint 3 - EMR & Farmasi]'s end
+[Release v1.0] happens at [Sprint 4 - Pembayaran & Laporan]'s end
+
+@enduml
